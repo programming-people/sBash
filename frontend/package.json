@@ -11,7 +11,6 @@
 		"prebuild": "pnpm run generate",
 		"lint": "next lint --dir src --fix",
 		"generate": "graphql-codegen --config .graphqlrc.ts",
-		"prepare": "husky install",
 		"test": "playwright test"
 	},
 	"dependencies": {

@@ -11,7 +11,7 @@ export const metadata = {
 interface User {
 	id: number;
 	name: string;
-}  
+}
 
 export default async function Page({ params }: { params: { channel: string } }) {
 	const data = await executeGraphQL(ProductListByCollectionDocument, {
