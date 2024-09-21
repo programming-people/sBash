@@ -20,7 +20,7 @@ export default function UserList() {
 				const data = await response.json();
 				if (
 					Array.isArray(data) &&
-					data.every((item) => typeof item === "object" && "id" in item && "name" in item)
+					data.every((item) => typeof item === "object" && "id" in item! && "name" in item)
 				) {
 					setUsers(data as User[]);
 				} else {

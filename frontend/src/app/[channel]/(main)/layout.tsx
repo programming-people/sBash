@@ -10,10 +10,10 @@ export const metadata = {
 export default function RootLayout(props: { children: ReactNode; params: { channel: string } }) {
 	return (
 		<>
-			<Header channel={props.params.channel} />
+			<Header />
 			<div className="flex min-h-[calc(100dvh-64px)] flex-col">
 				<main className="flex-1">{props.children}</main>
-				<Footer channel={props.params.channel} />
+				<Footer />
 			</div>
 		</>
 	);

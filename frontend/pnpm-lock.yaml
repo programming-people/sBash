@@ -14,6 +14,12 @@ importers:
       '@babel/core':
         specifier: 7.25.2
         version: 7.25.2
+      '@graphql-codegen/cli':
+        specifier: 5.0.0
+        version: 5.0.0(@parcel/watcher@2.3.0)(@types/node@20.10.0)(graphql@16.8.1)(typescript@5.3.3)
+      '@graphql-codegen/client-preset':
+        specifier: 4.1.0
+        version: 4.1.0(graphql@16.8.1)
       '@headlessui/react':
         specifier: 1.7.18
         version: 1.7.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -93,12 +99,6 @@ importers:
       '@babel/preset-env':
         specifier: 7.25.4
         version: 7.25.4(@babel/core@7.25.2)
-      '@graphql-codegen/cli':
-        specifier: 5.0.0
-        version: 5.0.0(@parcel/watcher@2.3.0)(@types/node@20.10.0)(graphql@16.8.1)(typescript@5.3.3)
-      '@graphql-codegen/client-preset':
-        specifier: 4.1.0
-        version: 4.1.0(graphql@16.8.1)
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
         version: 3.2.0(graphql@16.8.1)

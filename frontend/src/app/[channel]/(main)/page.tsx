@@ -8,10 +8,10 @@ export const metadata = {
 		"みんつくでアイディアやサービスを発表してアイディアを肉付けしたり、サービスの開発を始めてみよう！",
 };
 
-interface User {
-	id: number;
-	name: string;
-}
+// interface User {
+// 	id: number;
+// 	name: string;
+// }
 
 export default async function Page({ params }: { params: { channel: string } }) {
 	const data = await executeGraphQL(ProductListByCollectionDocument, {
