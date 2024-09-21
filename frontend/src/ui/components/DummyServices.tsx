@@ -8,13 +8,13 @@ interface Product {
   price: number;
   currency: string;
   image: string;
-  slug: string; // {{ edit_1 }} Added slug property
+  slug: string;
 }
 
 const dummyProducts: Product[] = [
   {
     id: '1',
-    name: 'スマートフォン X',
+    name: 'サービス１',
     description: '最新のハイエンドスマートフォン',
     price: 99999,
     currency: 'JPY',
@@ -23,7 +23,7 @@ const dummyProducts: Product[] = [
   },
   {
     id: '2',
-    name: 'ラップトップ Pro',
+    name: 'サービス２',
     description: 'プロフェッショナル向け高性能ラップトップ',
     price: 199999,
     currency: 'JPY',
@@ -32,7 +32,7 @@ const dummyProducts: Product[] = [
   },
   {
     id: '3',
-    name: 'ワイヤレスイヤホン Y',
+    name: 'サービス３',
     description: 'ノイズキャンセリング機能付きワイヤレスイヤホン',
     price: 29999,
     currency: 'JPY',
@@ -41,7 +41,7 @@ const dummyProducts: Product[] = [
   },
   {
     id: '4',
-    name: 'スマートウォッチ Z',
+    name: 'サービス４',
     description: '健康管理機能搭載のスマートウォッチ',
     price: 39999,
     currency: 'JPY',
@@ -50,7 +50,7 @@ const dummyProducts: Product[] = [
   },
   {
     id: '5',
-    name: 'タブレット A',
+    name: 'サービス５',
     description: '軽量で持ち運びに便利なタブレット',
     price: 49999,
     currency: 'JPY',
@@ -59,7 +59,7 @@ const dummyProducts: Product[] = [
   },
 ];
 
-export default function Dummy() {
+export default function DummyIdea() {
   return (
     <div>
       <ProductList products={dummyProducts} />

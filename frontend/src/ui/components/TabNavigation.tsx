@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import DummyIdea from "./DummyIdea";
+import DummyServices from "./DummyServices";
 
 const tabs = ["マインドマップ", "サービス"];
 
@@ -10,9 +12,9 @@ export function TabNavigation() {
 	const renderContent = () => {
 		switch (activeTab) {
 			case "マインドマップ":
-				return <div>Welcome to our homepage!</div>;
+				return <DummyIdea />;
 			case "サービス":
-				return <div>Here are our products.</div>;
+				return <DummyServices />;;
 			default:
 				return null;
 		}
@@ -21,7 +23,7 @@ export function TabNavigation() {
 	return (
 		<>
 			<nav className="bg-gray-800">
-				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				<div className="mx-auto max-w-7xl px-6">
 					<div className="flex h-12 items-center justify-start">
 						<div className="flex space-x-4">
 							{tabs.map((tab) => (
