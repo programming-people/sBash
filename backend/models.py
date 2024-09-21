@@ -1,26 +1,28 @@
 from typing import List
 
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from DB import db
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
-class User(db.Base):
+class Base(DeclarativeBase):
+    pass
+
+
+class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(32), index=True)
     hashed_password: Mapped[str]
 
     projects: Mapped[List["Project"]] = relationship(back_populates="user")
     mindmaps: Mapped[List["Mindmap"]] = relationship(back_populates="user")
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "email": self.email}
+        return {"id": self.id, "name": self.name}
 
 
-class Project(db.Base):
+class Project(Base):
     __tablename__ = "projects"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -34,12 +36,12 @@ class Project(db.Base):
     mindmap: Mapped["Mindmap"] = relationship(back_populates="projects")
 
 
-class Mindmap(db.Base):
+class Mindmap(Base):
     __tablename__ = "mindmaps"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    top_node_id: Mapped[int] = mapped_column(ForeignKey("nodes.id"))
+    # top_node_id: Mapped[int] = mapped_column(ForeignKey("nodes.id"))
 
     title: Mapped[str] = mapped_column(String(32))
     description: Mapped[str] = mapped_column(String(256))
@@ -49,7 +51,7 @@ class Mindmap(db.Base):
     nodes: Mapped[List["Node"]] = relationship(back_populates="mindmap")
 
 
-class Node(db.Base):
+class Node(Base):
     __tablename__ = "nodes"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -59,5 +61,5 @@ class Node(db.Base):
     title: Mapped[str] = mapped_column(String(32))
 
     mindmap: Mapped["Mindmap"] = relationship(back_populates="nodes")
-    parent: Mapped["Node"] = relationship(back_populates="children")
-    children: Mapped[List["Node"]] = relationship(back_populates="parent")
+    # parent: Mapped["Node"] = relationship(back_populates="children")
+    # children: Mapped[List["Node"]] = relationship(back_populates="parent")
