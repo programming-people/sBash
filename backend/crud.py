@@ -113,6 +113,14 @@ def create_project(
     return db_project
 
 
+def post_comment(db: Session, project_id: int, user_id: int, body: str):
+    db_comment = models.Comment(project_id=project_id, user_id=user_id, body=body)
+    db.add(db_comment)
+    db.commit()
+    db.refresh(db_comment)
+    return db_comment
+
+
 def get_projects(
     db: Session, skip: int = 0, limit: int = 100
 ) -> Sequence[models.Project]:

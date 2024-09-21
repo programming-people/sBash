@@ -162,6 +162,16 @@ def get_project_image(image_id: str, db: Session = Depends(db.get_session)):
     return FileResponse(path)
 
 
+@app.post("/projects/{project_id}/comments")
+def post_comment(
+    project_id: int,
+    body: str,
+    user_id: int = Depends(jwt.get_user_id),
+    db: Session = Depends(db.get_session),
+):
+    crud.post_comment(db, project_id, user_id, body)
+
+
 @app.put("/projects")
 def update_project(
     project_id: Annotated[int, Body()],
