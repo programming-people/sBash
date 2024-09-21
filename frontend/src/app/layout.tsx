@@ -1,4 +1,4 @@
-// import "./globals.css";
+import "../../public/styles.css";
 import { type ReactNode } from "react";
 import { type Metadata } from "next";
 import { DraftModeNotification } from "@/ui/components/DraftModeNotification";
