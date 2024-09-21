@@ -1,12 +1,14 @@
 from typing import List
 
 from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
-from DB import db
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
-class User(db.Base):
+class Base(DeclarativeBase):
+    pass
+
+
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -20,7 +22,7 @@ class User(db.Base):
         return {"id": self.id, "name": self.name, "email": self.email}
 
 
-class Project(db.Base):
+class Project(Base):
     __tablename__ = "projects"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -34,7 +36,7 @@ class Project(db.Base):
     mindmap: Mapped["Mindmap"] = relationship(back_populates="projects")
 
 
-class Mindmap(db.Base):
+class Mindmap(Base):
     __tablename__ = "mindmaps"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -49,7 +51,7 @@ class Mindmap(db.Base):
     nodes: Mapped[List["Node"]] = relationship(back_populates="mindmap")
 
 
-class Node(db.Base):
+class Node(Base):
     __tablename__ = "nodes"
 
     id: Mapped[int] = mapped_column(primary_key=True)
