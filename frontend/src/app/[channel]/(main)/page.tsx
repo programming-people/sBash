@@ -3,10 +3,15 @@ import { executeGraphQL } from "@/lib/graphql";
 import { ProductList } from "@/ui/components/ProductList";
 
 export const metadata = {
-	title: "ACME Storefront, powered by Saleor & Next.js",
+	title: "みんつく : みんなで作るアイディアやサービス",
 	description:
-		"Storefront Next.js Example for building performant e-commerce experiences with Saleor - the composable, headless commerce platform for global brands.",
+		"みんつくでアイディアやサービスを発表してアイディアを肉付けしたり、サービスの開発を始めてみよう！",
 };
+
+interface User {
+	id: number;
+	name: string;
+}  
 
 export default async function Page({ params }: { params: { channel: string } }) {
 	const data = await executeGraphQL(ProductListByCollectionDocument, {
