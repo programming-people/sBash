@@ -1,3 +1,28 @@
+## 開発環境でDBに接続
+
+### 環境変数を設定
+
+`.env` ファイルを作成
+
+```.env
+DB_HOST=localhost
+DB_USER=postgres
+DB_NAME=postgres
+DB_PASS=password
+```
+
+### DBを起動
+
+`docker compose up -d`
+
+### サーバーを起動
+
+`fastapi dev main.py`
+
+or
+
+`uv run fastapi dev main.py`
+
 ## データベース接続
 ### postgresユーザーで接続
 sudo -u postgres psql

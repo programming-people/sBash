@@ -1,14 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-import os
 
-HOST = os.getenv("HOST")
-USER_NAME = os.getenv("USER_NAME")
-DB_NAME = os.getenv("DB_NAME")
-PASSWORD = os.getenv("PASSWORD")
-
-DATABASE_URL = f"postgresql://{USER_NAME}:{PASSWORD}@{HOST}/{DB_NAME}"
+from load_env import DB_URL
 
 
 class DB:
@@ -28,4 +22,4 @@ class DB:
 
 
 # データベースのインスタンスを作成
-db = DB(DATABASE_URL)
+db = DB(DB_URL)
