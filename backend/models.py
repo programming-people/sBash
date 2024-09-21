@@ -39,7 +39,7 @@ class Mindmap(db.Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
-    top_node_id: Mapped[int] = mapped_column(ForeignKey("nodes.id"))
+    # top_node_id: Mapped[int] = mapped_column(ForeignKey("nodes.id"))
 
     title: Mapped[str] = mapped_column(String(32))
     description: Mapped[str] = mapped_column(String(256))
@@ -59,5 +59,5 @@ class Node(db.Base):
     title: Mapped[str] = mapped_column(String(32))
 
     mindmap: Mapped["Mindmap"] = relationship(back_populates="nodes")
-    parent: Mapped["Node"] = relationship(back_populates="children")
-    children: Mapped[List["Node"]] = relationship(back_populates="parent")
+    # parent: Mapped["Node"] = relationship(back_populates="children")
+    # children: Mapped[List["Node"]] = relationship(back_populates="parent")
