@@ -19,7 +19,7 @@ class User(Base):
     mindmaps: Mapped[List["Mindmap"]] = relationship(back_populates="user")
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "email": self.email}
+        return {"id": self.id, "name": self.name}
 
 
 class Project(Base):
