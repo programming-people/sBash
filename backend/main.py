@@ -7,6 +7,7 @@ from fastapi import (
     File,
     Form,
     HTTPException,
+    Query,
     UploadFile,
     status,
 )
@@ -126,9 +127,17 @@ def create_project(
 
 @app.get("/projects")
 def read_projects(
-    skip: int = 0, limit: int = 100, db: Session = Depends(db.get_session)
+    skip: int = 0,
+    limit: int = 100,
+    mindmap_id: Annotated[int | None, Query(description="mindmap id")] = None,
+    db: Session = Depends(db.get_session),
 ):
-    projects = crud.get_projects(db, skip=skip, limit=limit)
+    if mindmap_id is None:
+        projects = crud.get_projects(db, skip=skip, limit=limit)
+    else:
+        projects = crud.get_projects_by_mindmap_id(
+            db, skip=skip, limit=limit, mindmap_id=mindmap_id
+        )
     return projects
 
 
