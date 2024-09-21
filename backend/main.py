@@ -1,8 +1,17 @@
 from typing import Annotated
 
-from fastapi import Body, Depends, FastAPI, HTTPException, status
-from pydantic import HttpUrl
-from sqlalchemy.orm import Session, raiseload
+from fastapi import (
+    Body,
+    Depends,
+    FastAPI,
+    File,
+    Form,
+    HTTPException,
+    UploadFile,
+    status,
+)
+from fastapi.responses import FileResponse
+from sqlalchemy.orm import Session
 
 import crud
 from auth import jwt
@@ -51,8 +60,8 @@ def login(
 # mindmap
 @app.post("/mindmaps")
 def create_mindmap(
-    title: Annotated[str, Body],
-    description: Annotated[str, Body],
+    title: Annotated[str, Body()],
+    description: Annotated[str, Body()],
     user_id: int = Depends(jwt.get_user_id),
     db: Session = Depends(db.get_session),
 ):
@@ -86,8 +95,8 @@ def get_mindmap(mindmap_id: int, db: Session = Depends(db.get_session)):
 @app.put("/mindmaps")
 def update_mindmap(
     mindmap_id: int,
-    title: Annotated[str | None, Body] = None,
-    description: Annotated[str | None, Body] = None,
+    title: Annotated[str | None, Body()] = None,
+    description: Annotated[str | None, Body()] = None,
     user_id: int = Depends(jwt.get_user_id),
     db: Session = Depends(db.get_session),
 ):
@@ -97,3 +106,64 @@ def update_mindmap(
             status_code=status.HTTP_403_FORBIDDEN, detail="アクセス権がありません"
         )
     return db_mindmap
+
+
+# project
+@app.post("/projects")
+def create_project(
+    title: Annotated[str, Form()],
+    mindmap_id: Annotated[int, Form()],
+    description: Annotated[str, Form()],
+    images: Annotated[list[UploadFile], File()],
+    user_id: int = Depends(jwt.get_user_id),
+    db: Session = Depends(db.get_session),
+):
+    db_project = crud.create_project(
+        db, user_id, mindmap_id, title, description, images
+    )
+    return {"info": db_project, "img": len(images)}
+
+
+@app.get("/projects")
+def read_projects(
+    skip: int = 0, limit: int = 100, db: Session = Depends(db.get_session)
+):
+    projects = crud.get_projects(db, skip=skip, limit=limit)
+    return projects
+
+
+@app.get("/projects/{project_id}")
+def get_project(project_id: int, db: Session = Depends(db.get_session)):
+    db_project = crud.get_project(db, project_id)
+    if db_project is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="マインドマップが見つかりません",
+        )
+    return db_project
+
+
+@app.get("/projects/image/{image_id}")
+def get_project_image(image_id: str, db: Session = Depends(db.get_session)):
+    path = crud.get_project_image_path(db, image_id)
+    if path is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="画像が見つかりません"
+        )
+    return FileResponse(path)
+
+
+@app.put("/projects")
+def update_project(
+    project_id: Annotated[int, Body()],
+    title: Annotated[str | None, Body()] = None,
+    description: Annotated[str | None, Body()] = None,
+    user_id: int = Depends(jwt.get_user_id),
+    db: Session = Depends(db.get_session),
+):
+    db_project = crud.update_project(db, project_id, user_id, title, description)
+    if db_project is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="アクセス権がありません"
+        )
+    return db_project
