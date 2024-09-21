@@ -11,8 +11,8 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(32), index=True)
     hashed_password: Mapped[str]
 
     projects: Mapped[List["Project"]] = relationship(back_populates="user")
