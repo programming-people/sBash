@@ -79,3 +79,58 @@ def update_mindmap(
     db.commit()
     db.refresh(db_mindmap)
     return db_mindmap
+
+
+# projects
+def create_project(
+    db: Session,
+    user_id: int,
+    mindmap_id: int,
+    title: str,
+    description: str,
+) -> models.Project:
+    db_project = models.Project(
+        user_id=user_id, mindmap_id=mindmap_id, title=title, description=description
+    )
+    db.add(db_project)
+    db.commit()
+    db.refresh(db_project)
+    return db_project
+
+
+def get_projects(
+    db: Session, skip: int = 0, limit: int = 100
+) -> Sequence[models.Project]:
+    return db.scalars(select(models.Project).offset(skip).limit(limit)).all()
+
+
+def get_project(
+    db: Session,
+    project_id: int,
+) -> models.Project | None:
+    db_project = db.scalars(
+        select(models.Project).where(models.Project.id == project_id)
+    ).one_or_none()
+    return db_project
+
+
+def update_project(
+    db: Session,
+    project_id: int,
+    user_id: int,
+    title: str | None,
+    description: str | None,
+) -> models.Project | None:
+    db_project = get_project(db, project_id)
+    if db_project is None:
+        return None
+    if db_project.user_id != user_id:
+        return None
+
+    if title:
+        db_project.title = title
+    if description:
+        db_project.description = description
+    db.commit()
+    db.refresh(db_project)
+    return db_project
