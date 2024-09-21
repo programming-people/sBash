@@ -1,7 +1,7 @@
 import uuid
 from typing import List
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Uuid
+from sqlalchemy import ForeignKey, String, Uuid
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -38,6 +38,7 @@ class Project(Base):
     images: Mapped[List["ProjectImage"]] = relationship(
         back_populates="project", lazy="selectin"
     )
+    comments: Mapped[List["Comment"]] = relationship(lazy="selectin")
 
 
 class ProjectImage(Base):
@@ -51,6 +52,15 @@ class ProjectImage(Base):
     ext: Mapped[str]
 
     project: Mapped["Project"] = relationship(back_populates="images")
+
+
+class Comment(Base):
+    __tablename__ = "comments"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    body: Mapped[str]
 
 
 class Mindmap(Base):

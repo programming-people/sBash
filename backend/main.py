@@ -27,7 +27,7 @@ async def welcom() -> dict:
 
 
 # auth
-@app.post("/register")
+@app.post("/register", tags=["auth"])
 def register(
     name: Annotated[str, Body()],
     password: Annotated[str, Body()],
@@ -42,7 +42,7 @@ def register(
     return {"token": token, "user_id": db_user.id}
 
 
-@app.post("/login")
+@app.post("/login", tags=["auth"])
 def login(
     name: Annotated[str, Body()],
     password: Annotated[str, Body()],
@@ -59,7 +59,7 @@ def login(
 
 
 # mindmap
-@app.post("/mindmaps")
+@app.post("/mindmaps", tags=["mindmap"])
 def create_mindmap(
     title: Annotated[str, Body()],
     description: Annotated[str, Body()],
@@ -75,14 +75,14 @@ def create_mindmap(
     return db_mindmap
 
 
-@app.get("/mindmaps")
+@app.get("/mindmaps", tags=["mindmap"])
 def get_mindmaps(
     skip: int = 0, limit: int = 100, db: Session = Depends(db.get_session)
 ):
     return crud.get_mindmaps(db, skip, limit)
 
 
-@app.get("/mindmaps/{mindmap_id}")
+@app.get("/mindmaps/{mindmap_id}", tags=["mindmap"])
 def get_mindmap(mindmap_id: int, db: Session = Depends(db.get_session)):
     db_mindmap = crud.get_mindmap(db, mindmap_id)
     if db_mindmap is None:
@@ -93,7 +93,7 @@ def get_mindmap(mindmap_id: int, db: Session = Depends(db.get_session)):
     return db_mindmap
 
 
-@app.put("/mindmaps")
+@app.put("/mindmaps", tags=["mindmap"])
 def update_mindmap(
     mindmap_id: int,
     title: Annotated[str | None, Body()] = None,
@@ -110,7 +110,7 @@ def update_mindmap(
 
 
 # project
-@app.post("/projects")
+@app.post("/projects", tags=["project"])
 def create_project(
     title: Annotated[str, Form()],
     mindmap_id: Annotated[int, Form()],
@@ -125,7 +125,7 @@ def create_project(
     return {"info": db_project, "img": len(images)}
 
 
-@app.get("/projects")
+@app.get("/projects", tags=["project"])
 def read_projects(
     skip: int = 0,
     limit: int = 100,
@@ -141,7 +141,7 @@ def read_projects(
     return projects
 
 
-@app.get("/projects/{project_id}")
+@app.get("/projects/{project_id}", tags=["project"])
 def get_project(project_id: int, db: Session = Depends(db.get_session)):
     db_project = crud.get_project(db, project_id)
     if db_project is None:
@@ -152,7 +152,7 @@ def get_project(project_id: int, db: Session = Depends(db.get_session)):
     return db_project
 
 
-@app.get("/projects/image/{image_id}")
+@app.get("/projects/image/{image_id}", tags=["project"])
 def get_project_image(image_id: str, db: Session = Depends(db.get_session)):
     path = crud.get_project_image_path(db, image_id)
     if path is None:
@@ -162,7 +162,17 @@ def get_project_image(image_id: str, db: Session = Depends(db.get_session)):
     return FileResponse(path)
 
 
-@app.put("/projects")
+@app.post("/projects/{project_id}/comments", tags=["project"])
+def post_comment(
+    project_id: int,
+    body: str,
+    user_id: int = Depends(jwt.get_user_id),
+    db: Session = Depends(db.get_session),
+):
+    crud.post_comment(db, project_id, user_id, body)
+
+
+@app.put("/projects", tags=["project"])
 def update_project(
     project_id: Annotated[int, Body()],
     title: Annotated[str | None, Body()] = None,
