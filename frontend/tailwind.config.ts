@@ -1,18 +1,11 @@
-import type { Config } from 'tailwindcss'
+import TypographyPlugin from "@tailwindcss/typography";
+import FormPlugin from "@tailwindcss/forms";
+import ContainerQueriesPlugin from "@tailwindcss/container-queries";
+import { type Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/container-queries'),
-  ],
-}
-export default config
+	content: ["./src/**/*.{ts,tsx}"],
+	plugins: [TypographyPlugin, FormPlugin, ContainerQueriesPlugin],
+};
+
+export default config;
