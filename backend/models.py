@@ -1,7 +1,7 @@
 import uuid
 from typing import List
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Uuid
+from sqlalchemy import ForeignKey, String, Uuid
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
