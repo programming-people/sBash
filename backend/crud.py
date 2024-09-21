@@ -1,36 +1,26 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
+
 import models
+from auth.password import get_password_hash, verify_password
 
-def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
-
-def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.User).offset(skip).limit(limit).all()
-
-def create_user(db: Session, name: str, email: str):
-    db_user = models.User(name=name, email=email)
+def create_user(db: Session, name: str, password: str):
+    hashed_password = get_password_hash(password)
+    db_user = models.User(name=name, hashed_password=hashed_password)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
-def update_user(db: Session, user_id: int, name: str = None, email: str = None):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if db_user:
-        if name:
-            db_user.name = name
-        if email:
-            db_user.email = email
-        db.commit()
-        db.refresh(db_user)
-    return db_user
 
-def delete_user(db: Session, user_id: int):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if db_user:
-        db.delete(db_user)
-        db.commit()
-    return db_user
+def verify_user(db: Session, name: str, password: str) -> models.User | None:
+    try:
+        user = db.scalars(select(models.User).where(models.User.name == name)).one()
+    except:
+        return None
+
+    if not verify_password(password, user.hashed_password):
+        return None
+
+    return user
