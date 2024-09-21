@@ -1,8 +1,7 @@
 from typing import Annotated
 
 from fastapi import Body, Depends, FastAPI, HTTPException, status
-from pydantic import HttpUrl
-from sqlalchemy.orm import Session, raiseload
+from sqlalchemy.orm import Session
 
 import crud
 from auth import jwt
