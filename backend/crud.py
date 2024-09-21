@@ -119,6 +119,20 @@ def get_projects(
     return db.scalars(select(models.Project).offset(skip).limit(limit)).all()
 
 
+def get_projects_by_mindmap_id(
+    db: Session,
+    mindmap_id: int,
+    skip: int = 0,
+    limit: int = 100,
+) -> Sequence[models.Project]:
+    return db.scalars(
+        select(models.Project)
+        .where(models.Project.mindmap_id == mindmap_id)
+        .offset(skip)
+        .limit(limit)
+    ).all()
+
+
 def get_project(
     db: Session,
     project_id: int,
