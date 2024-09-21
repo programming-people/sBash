@@ -23,6 +23,9 @@ importers:
       '@headlessui/react':
         specifier: 1.7.18
         version: 1.7.18(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@next/env':
+        specifier: 14.2.13
+        version: 14.2.13
       '@saleor/auth-sdk':
         specifier: 1.0.1
         version: 1.0.1(next@14.2.13(@babel/core@7.25.2)(@playwright/test@1.47.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(urql@4.0.6(graphql@16.8.1)(react@18.3.1))
@@ -108,9 +111,6 @@ importers:
       '@graphql-typed-document-node/core':
         specifier: 3.2.0
         version: 3.2.0(graphql@16.8.1)
-      '@next/env':
-        specifier: 14.0.4
-        version: 14.0.4
       '@parcel/watcher':
         specifier: 2.3.0
         version: 2.3.0
@@ -1231,9 +1231,6 @@ packages:
 
   '@kamilkisiela/fast-url-parser@1.1.4':
     resolution: {integrity: sha512-gbkePEBupNydxCelHCESvFSFM8XPh1Zs/OAVRW/rKpEqPAl5PbOM90Si8mv9bvnR53uPD2s/FiRxdvSejpRJew==}
-
-  '@next/env@14.0.4':
-    resolution: {integrity: sha512-irQnbMLbUNQpP1wcE5NstJtbuA/69kRfzBrpAD7Gsn8zm/CY6YQYc3HQBz8QPxwISG26tIm5afvvVbu508oBeQ==}
 
   '@next/env@14.2.13':
     resolution: {integrity: sha512-s3lh6K8cbW1h5Nga7NNeXrbe0+2jIIYK9YaA9T7IufDWnZpozdFUp6Hf0d5rNWUKu4fEuSX2rCKlGjCrtylfDw==}
@@ -5668,8 +5665,6 @@ snapshots:
       '@jridgewell/sourcemap-codec': 1.5.0
 
   '@kamilkisiela/fast-url-parser@1.1.4': {}
-
-  '@next/env@14.0.4': {}
 
   '@next/env@14.2.13': {}
 
