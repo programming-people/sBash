@@ -129,6 +129,17 @@ def get_project(
     return db_project
 
 
+def get_project_image_path(db: Session, image_id: str) -> str | None:
+    try:
+        db_project_image = db.scalars(
+            select(models.ProjectImage).where(models.ProjectImage.id == image_id)
+        ).one()
+    except:
+        return None
+    ext = db_project_image.ext
+    return os.path.join(str(IMG_PATH), image_id + ext)
+
+
 def update_project(
     db: Session,
     project_id: int,

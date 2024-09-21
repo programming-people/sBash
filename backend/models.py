@@ -35,7 +35,9 @@ class Project(Base):
 
     user: Mapped[User] = relationship(back_populates="projects")
     mindmap: Mapped["Mindmap"] = relationship(back_populates="projects")
-    images: Mapped[List["ProjectImage"]] = relationship(back_populates="project")
+    images: Mapped[List["ProjectImage"]] = relationship(
+        back_populates="project", lazy="selectin"
+    )
 
 
 class ProjectImage(Base):

@@ -10,6 +10,7 @@ from fastapi import (
     UploadFile,
     status,
 )
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 import crud
@@ -140,6 +141,16 @@ def get_project(project_id: int, db: Session = Depends(db.get_session)):
             detail="マインドマップが見つかりません",
         )
     return db_project
+
+
+@app.get("/projects/image/{image_id}")
+def get_project_image(image_id: str, db: Session = Depends(db.get_session)):
+    path = crud.get_project_image_path(db, image_id)
+    if path is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="画像が見つかりません"
+        )
+    return FileResponse(path)
 
 
 @app.put("/projects")
