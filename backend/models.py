@@ -46,6 +46,7 @@ class ProjectImage(Base):
     )
     project_id: Mapped[int] = mapped_column(ForeignKey("projects.id"))
     order: Mapped[int]
+    ext: Mapped[str]
 
     project: Mapped["Project"] = relationship(back_populates="images")
 

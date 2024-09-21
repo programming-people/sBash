@@ -1,6 +1,15 @@
 from typing import Annotated
 
-from fastapi import Body, Depends, FastAPI, HTTPException, status
+from fastapi import (
+    Body,
+    Depends,
+    FastAPI,
+    File,
+    Form,
+    HTTPException,
+    UploadFile,
+    status,
+)
 from sqlalchemy.orm import Session
 
 import crud
@@ -101,14 +110,17 @@ def update_mindmap(
 # project
 @app.post("/projects")
 def create_project(
-    title: Annotated[str, Body()],
-    mindmap_id: Annotated[int, Body()],
-    description: Annotated[str, Body()],
+    title: Annotated[str, Form()],
+    mindmap_id: Annotated[int, Form()],
+    description: Annotated[str, Form()],
+    images: Annotated[list[UploadFile], File()],
     user_id: int = Depends(jwt.get_user_id),
     db: Session = Depends(db.get_session),
 ):
-    db_project = crud.create_project(db, user_id, mindmap_id, title, description)
-    return db_project
+    db_project = crud.create_project(
+        db, user_id, mindmap_id, title, description, images
+    )
+    return {"info": db_project, "img": len(images)}
 
 
 @app.get("/projects")

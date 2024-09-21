@@ -1,3 +1,6 @@
+import os
+import shutil
+import uuid
 from typing import Sequence
 
 from sqlalchemy import select
@@ -5,6 +8,7 @@ from sqlalchemy.orm import Session
 
 import models
 from auth.password import get_password_hash, verify_password
+from load_env import IMG_PATH
 
 
 # auth
@@ -88,10 +92,21 @@ def create_project(
     mindmap_id: int,
     title: str,
     description: str,
+    images: list,
 ) -> models.Project:
+    uuids: list[uuid.UUID] = [uuid.uuid4() for _ in range(len(images))]
+    exts: list[str] = [(os.path.splitext(image.filename))[1] for image in images]
+    for uuid_, image, ext in zip(uuids, images, exts):
+        id: str = str(uuid_)
+        file_path = os.path.join(str(IMG_PATH), id + ext)
+        with open(file_path, mode="wb") as f:
+            shutil.copyfileobj(image.file, f)
+
     db_project = models.Project(
         user_id=user_id, mindmap_id=mindmap_id, title=title, description=description
     )
+    for i, (uuid_, ext) in enumerate(zip(uuids, exts)):
+        db_project.images.append(models.ProjectImage(id=uuid_, order=i, ext=ext))
     db.add(db_project)
     db.commit()
     db.refresh(db_project)
