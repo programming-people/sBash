@@ -98,9 +98,6 @@ importers:
       sharp:
         specifier: 0.33.2
         version: 0.33.2
-      tailwindcss:
-        specifier: 3.4.12
-        version: 3.4.12
       ts-invariant:
         specifier: 0.10.3
         version: 0.10.3
@@ -186,6 +183,9 @@ importers:
       schema-dts:
         specifier: 1.1.2
         version: 1.1.2(typescript@5.6.2)
+      tailwindcss:
+        specifier: 3.4.12
+        version: 3.4.12
       wonka:
         specifier: 6.3.4
         version: 6.3.4
