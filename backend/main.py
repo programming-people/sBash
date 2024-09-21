@@ -60,8 +60,8 @@ def login(
 # mindmap
 @app.post("/mindmaps")
 def create_mindmap(
-    title: Annotated[str, Body],
-    description: Annotated[str, Body],
+    title: Annotated[str, Body()],
+    description: Annotated[str, Body()],
     user_id: int = Depends(jwt.get_user_id),
     db: Session = Depends(db.get_session),
 ):
@@ -95,8 +95,8 @@ def get_mindmap(mindmap_id: int, db: Session = Depends(db.get_session)):
 @app.put("/mindmaps")
 def update_mindmap(
     mindmap_id: int,
-    title: Annotated[str | None, Body] = None,
-    description: Annotated[str | None, Body] = None,
+    title: Annotated[str | None, Body()] = None,
+    description: Annotated[str | None, Body()] = None,
     user_id: int = Depends(jwt.get_user_id),
     db: Session = Depends(db.get_session),
 ):
