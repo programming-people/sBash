@@ -7,10 +7,7 @@
 		"dev": "set NODE_OPTIONS=--max-old-space-size=1024 && next dev",
 		"build": "next build",
 		"start": "next start",
-		"predev": "pnpm run generate",
-		"prebuild": "pnpm run generate",
 		"lint": "next lint --dir src --fix",
-		"generate": "graphql-codegen --config .graphqlrc.ts",
 		"test": "playwright test"
 	},
 	"dependencies": {
@@ -18,8 +15,6 @@
 		"@headlessui/react": "1.7.18",
 		"@saleor/auth-sdk": "1.0.1",
 		"@tailwindcss/container-queries": "0.1.1",
-		"@graphql-codegen/cli": "5.0.0",
-   		"@graphql-codegen/client-preset": "4.1.0",
 		"clsx": "2.1.0",
 		"editorjs-html": "3.4.3",
 		"formik": "2.4.5",
@@ -45,9 +40,6 @@
 	},
 	"devDependencies": {
 		"@babel/preset-env": "7.25.4",
-		"@graphql-codegen/cli": "5.0.0",
-		"@graphql-codegen/client-preset": "4.1.0",
-		"@graphql-typed-document-node/core": "3.2.0",
 		"@next/env": "14.0.4",
 		"@parcel/watcher": "2.3.0",
 		"@playwright/test": "1.47.2",
@@ -68,7 +60,6 @@
 		"eslint-plugin-import": "2.29.1",
 		"eslint-plugin-playwright": "0.18.0",
 		"glob": "11.0.0",
-		"graphql-tag": "2.12.6",
 		"lint-staged": "15.1.0",
 		"postcss": "8.4.32",
 		"prettier": "3.1.1",
