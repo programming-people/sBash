@@ -1,3 +1,4 @@
+import os
 from typing import Annotated
 
 from fastapi import (
@@ -17,8 +18,12 @@ from sqlalchemy.orm import Session
 import crud
 from auth import jwt
 from DB import db
+from load_env import IMG_PATH
 
 app = FastAPI()
+
+if not os.path.exists(str(IMG_PATH)):
+    os.mkdir(str(IMG_PATH))
 
 
 @app.get("/welcome")
