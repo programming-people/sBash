@@ -4,6 +4,7 @@ import uuid
 from typing import Sequence
 
 from sqlalchemy import select
+from sqlalchemy.exc import MultipleResultsFound, NoResultFound
 from sqlalchemy.orm import Session
 
 import models
@@ -24,7 +25,7 @@ def create_user(db: Session, name: str, password: str):
 def verify_user(db: Session, name: str, password: str) -> models.User | None:
     try:
         user = db.scalars(select(models.User).where(models.User.name == name)).one()
-    except:
+    except (MultipleResultsFound, NoResultFound):
         return None
 
     if not verify_password(password, user.hashed_password):
@@ -156,7 +157,7 @@ def get_project_image_path(db: Session, image_id: str) -> str | None:
         db_project_image = db.scalars(
             select(models.ProjectImage).where(models.ProjectImage.id == image_id)
         ).one()
-    except:
+    except (MultipleResultsFound, NoResultFound):
         return None
     ext = db_project_image.ext
     return os.path.join(str(IMG_PATH), image_id + ext)
