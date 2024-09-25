@@ -95,21 +95,34 @@ def create_project(
     description: str,
     images: list,
 ) -> models.Project:
-    uuids: list[uuid.UUID] = [uuid.uuid4() for _ in range(len(images))]
-    exts: list[str] = [(os.path.splitext(image.filename))[1] for image in images]
-    for uuid_, image, ext in zip(uuids, images, exts):
-        id: str = str(uuid_)
-        file_path = os.path.join(str(IMG_PATH), id + ext)
-        with open(file_path, mode="wb") as f:
-            shutil.copyfileobj(image.file, f)
+    def get_ext(path: str) -> str:
+        return os.path.splitext(path)[1]
 
-    db_project = models.Project(
-        user_id=user_id, mindmap_id=mindmap_id, title=title, description=description
-    )
-    for i, (uuid_, ext) in enumerate(zip(uuids, exts)):
-        db_project.images.append(models.ProjectImage(id=uuid_, order=i, ext=ext))
-    db.add(db_project)
-    db.commit()
+    uuids: list[uuid.UUID] = [uuid.uuid4() for _ in range(len(images))]
+    exts: list[str] = [get_ext(image.filename) for image in images]
+    file_paths: list[str] = [
+        os.path.join(str(IMG_PATH), str(uuid_) + ext) for uuid_, ext in zip(uuids, exts)
+    ]
+    try:
+        for file_path, image in zip(file_paths, images):
+            with open(file_path, mode="wb") as f:
+                shutil.copyfileobj(image.file, f)
+
+        db_project = models.Project(
+            user_id=user_id, mindmap_id=mindmap_id, title=title, description=description
+        )
+        for i, (uuid_, ext) in enumerate(zip(uuids, exts)):
+            db_project.images.append(models.ProjectImage(id=uuid_, order=i, ext=ext))
+        db.add(db_project)
+        db.commit()
+    except:
+        for file_path in file_paths:
+            try:
+                os.remove(file_path)
+            except FileNotFoundError:
+                break
+        raise
+
     db.refresh(db_project)
     return db_project
 
